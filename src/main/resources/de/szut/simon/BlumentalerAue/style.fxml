@@ -7,17 +7,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns:fx="http://javafx.com/fxml1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-      minWidth="-Infinity"
-      prefHeight="350.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/11.0.1"
+<VBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1"
       fx:controller="de.szut.simon.BlumentalerAue.GuiController">
     <MenuBar>
         <Menu mnemonicParsing="false" text="Datei">
-            <MenuItem mnemonicParsing="false" text="Datenbank auswählen" onAction="#chooseDatabase"/>
-            <MenuItem mnemonicParsing="false" text="Beenden" onAction="#close"/>
+            <MenuItem mnemonicParsing="false" onAction="#chooseDatabase" text="Datenbank auswählen"/>
+            <MenuItem mnemonicParsing="false" onAction="#close" text="Beenden"/>
         </Menu>
         <Menu mnemonicParsing="false" text="Hilfe">
-            <MenuItem text="Standard Werte hinzufügen" onAction="#populateDefaultData"/>
+            <MenuItem onAction="#populateDefaultData" text="Standard Werte hinzufügen"/>
             <MenuItem mnemonicParsing="false" text="Über"/>
         </Menu>
     </MenuBar>
@@ -35,22 +34,22 @@
         <VBox.margin>
             <Insets bottom="12.0" left="40.0" right="227.0" top="13.0"/>
         </VBox.margin>
-        <Button mnemonicParsing="false" text="Datenbank verbinden" onAction="#connectDatabase"/>
+        <Button mnemonicParsing="false" onAction="#connectDatabase" text="Datenbank verbinden"/>
         <Label text="Bitte wählen Sie einen Schadstoff" GridPane.rowIndex="1"/>
-        <ComboBox prefWidth="150.0" GridPane.rowIndex="2" fx:id="pflanzenmittelBox"/>
-        <TableView prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3" fx:id="umweltdatenTable">
+        <ComboBox fx:id="pflanzenmittelBox" prefWidth="150.0" GridPane.rowIndex="2"/>
+        <TableView fx:id="umweltdatenTable" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
             <columns>
                 <TableColumn text="Index">
                     <cellValueFactory>
                         <PropertyValueFactory property="index"/>
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn text="Wert" fx:id="valueColumn"/>
+                <TableColumn fx:id="valueColumn" text="Wert"/>
             </columns>
         </TableView>
-        <Button mnemonicParsing="false" text="Daten lesen" GridPane.columnIndex="1" GridPane.rowIndex="2"
-                onAction="#readData"/>
-        <LineChart GridPane.columnIndex="1" GridPane.rowIndex="3" fx:id="valueChart">
+        <Button mnemonicParsing="false" onAction="#readData" text="Daten lesen" GridPane.columnIndex="1"
+                GridPane.rowIndex="2"/>
+        <LineChart fx:id="valueChart" GridPane.columnIndex="1" GridPane.rowIndex="3">
             <xAxis>
                 <CategoryAxis side="BOTTOM"/>
             </xAxis>
