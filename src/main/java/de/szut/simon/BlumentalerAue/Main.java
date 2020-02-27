@@ -17,7 +17,7 @@ import java.util.Properties;
 public class Main extends Application {
 
     private File windowSettingsDir = Paths.get(System.getProperty("user.home"), "BlumentalerAue").toFile();
-    private File windowSettingsFile = new File(windowSettingsDir, "window.properties");
+    private File windowSettingsFile = new File(windowSettingsDir, "settings.properties");
 
     public static void main(String[] args) {
         launch(args);
@@ -40,6 +40,9 @@ public class Main extends Application {
                 stage.setHeight(Double.parseDouble(windowProperties.getProperty("Height")));
                 stage.setWidth(Double.parseDouble(windowProperties.getProperty("Width")));
             }
+            String dbPath = windowProperties.getProperty("databasePath", null);
+            if (dbPath != null)
+                DBController.getInstance().setDbPath(new File(dbPath));
         }
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("style.fxml"));
@@ -68,9 +71,12 @@ public class Main extends Application {
             windowProperties.setProperty("Y", String.valueOf(s.getY()));
             windowProperties.setProperty("Height", String.valueOf(s.getHeight()));
             windowProperties.setProperty("Width", String.valueOf(s.getWidth()));
+            windowProperties.setProperty("databasePath", DBController.getInstance().getDbPath().getAbsolutePath());
 
             try {
                 if (windowSettingsDir.canWrite()) {
+                    if (windowSettingsFile.exists() && !windowSettingsFile.canWrite())
+                        return;
                     windowProperties.store(new FileWriter(windowSettingsFile), null);
                 }
             } catch (IOException e) {
