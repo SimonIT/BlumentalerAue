@@ -1,0 +1,30 @@
+plugins {
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+    id 'application'
+    id 'java'
+}
+
+group 'de.szut.simon'
+version '0.1'
+
+sourceCompatibility = 12
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile files("R:\\Programmierung\\Java_lib\\JDBC\\sqlite-jdbc-3.27.2.1.jar")
+    compile group: 'commons-io', name: 'commons-io', version: '2.4'
+    compileOnly group: 'org.jetbrains', name: 'annotations', version: '18.0.0'
+}
+
+application {
+    mainClassName = 'de.szut.simon.BlumentalerAue.Main'
+}
+
+javafx {
+    sdk = 'R:\\Programmierung\\Java_lib\\javafx-sdk-12.0.1'
+    modules = ['javafx.controls', 'javafx.fxml']
+}
