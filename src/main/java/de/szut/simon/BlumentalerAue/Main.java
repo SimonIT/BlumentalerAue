@@ -50,7 +50,7 @@ public class Main extends Application {
         ((GuiController) loader.getController()).stage = stage;
         stage.setScene(new Scene(root));
         stage.show();
-        stage.setOnCloseRequest(windowEvent -> {
+        stage.setOnHidden(windowEvent -> {
             Stage s = ((Stage) windowEvent.getSource());
 
             Properties windowProperties = new Properties();
