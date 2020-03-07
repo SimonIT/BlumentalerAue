@@ -29,7 +29,7 @@ public class GuiController {
     @FXML
     public ComboBox<Pflanzenmittel> pflanzenmittelBox;
     @FXML
-    public LineChart<String, Double> valueChart;
+    public LineChart<Long, Double> valueChart;
 
     Stage stage;
     private DBController dbController = DBController.getInstance();
@@ -38,10 +38,10 @@ public class GuiController {
     public void initialize() {
         pflanzenmittelBox.getSelectionModel().selectedItemProperty().addListener((observableValue, o, t1) -> {
             valueChart.getData().clear();
-            XYChart.Series<String, Double> pflanzenmittelSeries = new XYChart.Series<>();
+            XYChart.Series<Long, Double> pflanzenmittelSeries = new XYChart.Series<>();
             pflanzenmittelSeries.setName(t1.getMittel());
 
-            ObservableList<XYChart.Data<String, Double>> pflanzenmittelData = pflanzenmittelSeries.getData();
+            ObservableList<XYChart.Data<Long, Double>> pflanzenmittelData = pflanzenmittelSeries.getData();
             String property;
             switch (t1.getNr()) {
                 case "1":

@@ -51,7 +51,7 @@
                 GridPane.rowIndex="2"/>
         <LineChart fx:id="valueChart" GridPane.columnIndex="1" GridPane.rowIndex="3">
             <xAxis>
-                <CategoryAxis side="BOTTOM"/>
+                <NumberAxis side="BOTTOM"/>
             </xAxis>
             <yAxis>
                 <NumberAxis side="LEFT"/>

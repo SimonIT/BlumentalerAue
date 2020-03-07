@@ -56,7 +56,7 @@ class DBController {
 
 	void initDBConnection() {
 		try {
-			if (connection != null || !DB_PATH.exists())
+			if (connection != null) // Don't check if the database exists to create a new oe if none exists
 				return;
 			System.out.println("Creating Connection to Database...");
 			connection = DriverManager.getConnection("jdbc:sqlite:" + DB_PATH);
@@ -168,7 +168,7 @@ class DBController {
 		ResultSet umweltdatenResult = umweltdatenQuery.executeQuery("SELECT * FROM umweltdaten");
 
 		while (umweltdatenResult.next()) {
-			umweltdaten.add(new Umweldatum(umweltdatenResult.getString("index"), umweltdatenResult.getDouble("1"), umweltdatenResult.getDouble("2"), umweltdatenResult.getDouble("3")));
+			umweltdaten.add(new Umweldatum(umweltdatenResult.getLong("index"), umweltdatenResult.getDouble("1"), umweltdatenResult.getDouble("2"), umweltdatenResult.getDouble("3")));
 		}
 
 		umweltdatenResult.close();
