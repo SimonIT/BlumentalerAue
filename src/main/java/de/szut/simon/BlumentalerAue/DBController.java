@@ -51,7 +51,6 @@ class DBController {
 	public void setDbPath(@NotNull File dbPath) {
 		closeDB();
 		this.DB_PATH = dbPath;
-		initDBConnection();
 	}
 
 	void initDBConnection() {

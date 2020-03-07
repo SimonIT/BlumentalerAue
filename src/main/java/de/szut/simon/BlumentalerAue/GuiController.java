@@ -22,103 +22,118 @@ import java.sql.Statement;
 
 public class GuiController {
 
-    @FXML
-    public TableColumn<Umweldatum, Double> valueColumn;
-    @FXML
-    public TableView<Umweldatum> umweltdatenTable;
-    @FXML
-    public ComboBox<Pflanzenmittel> pflanzenmittelBox;
-    @FXML
-    public LineChart<Long, Double> valueChart;
+	@FXML
+	public TableColumn<Umweldatum, Double> valueColumn;
+	@FXML
+	public TableView<Umweldatum> umweltdatenTable;
+	@FXML
+	public ComboBox<Pflanzenmittel> pflanzenmittelBox;
+	@FXML
+	public LineChart<Long, Double> valueChart;
 
-    Stage stage;
-    private DBController dbController = DBController.getInstance();
+	Stage stage;
 
-    @FXML
-    public void initialize() {
-        pflanzenmittelBox.getSelectionModel().selectedItemProperty().addListener((observableValue, o, t1) -> {
-            valueChart.getData().clear();
-            XYChart.Series<Long, Double> pflanzenmittelSeries = new XYChart.Series<>();
-            pflanzenmittelSeries.setName(t1.getMittel());
+	private DBController dbController = DBController.getInstance();
+	private FileChooser.ExtensionFilter sqliteExtensionFilter = new FileChooser.ExtensionFilter("SQLITE Database", "*.sqlite", "*.db", "*.db3", "*.sqlite3");
 
-            ObservableList<XYChart.Data<Long, Double>> pflanzenmittelData = pflanzenmittelSeries.getData();
-            String property;
-            switch (t1.getNr()) {
-                case "1":
-                    property = "one";
-                    for (Umweldatum umweldatum : umweltdatenTable.getItems()) {
-                        pflanzenmittelData.add(new XYChart.Data<>(umweldatum.getIndex(), umweldatum.getOne()));
-                    }
-                    break;
-                case "2":
-                    property = "two";
-                    for (Umweldatum umweldatum : umweltdatenTable.getItems()) {
-                        pflanzenmittelData.add(new XYChart.Data<>(umweldatum.getIndex(), umweldatum.getTwo()));
-                    }
-                    break;
-                case "3":
-                    property = "three";
-                    for (Umweldatum umweldatum : umweltdatenTable.getItems()) {
-                        pflanzenmittelData.add(new XYChart.Data<>(umweldatum.getIndex(), umweldatum.getThree()));
-                    }
-                    break;
-                default:
-                    throw new IllegalStateException("Unexpected value: " + t1.getNr());
-            }
-            valueColumn.setCellValueFactory(new PropertyValueFactory<>(property));
-            umweltdatenTable.refresh();
-            valueChart.getData().addAll(pflanzenmittelSeries);
-        });
-    }
+	@FXML
+	public void initialize() {
+		pflanzenmittelBox.getSelectionModel().selectedItemProperty().addListener((observableValue, o, t1) -> {
+			valueChart.getData().clear();
+			XYChart.Series<Long, Double> pflanzenmittelSeries = new XYChart.Series<>();
+			pflanzenmittelSeries.setName(t1.getMittel());
 
-    @FXML
-    public void connectDatabase(ActionEvent actionEvent) {
-        try {
-            dbController.initDBConnection();
-        } catch (RuntimeException e) {
-            System.out.println("Couldn't connect");
-        }
-    }
+			ObservableList<XYChart.Data<Long, Double>> pflanzenmittelData = pflanzenmittelSeries.getData();
+			String property;
+			switch (t1.getNr()) {
+				case "1":
+					property = "one";
+					for (Umweldatum umweldatum : umweltdatenTable.getItems()) {
+						pflanzenmittelData.add(new XYChart.Data<>(umweldatum.getIndex(), umweldatum.getOne()));
+					}
+					break;
+				case "2":
+					property = "two";
+					for (Umweldatum umweldatum : umweltdatenTable.getItems()) {
+						pflanzenmittelData.add(new XYChart.Data<>(umweldatum.getIndex(), umweldatum.getTwo()));
+					}
+					break;
+				case "3":
+					property = "three";
+					for (Umweldatum umweldatum : umweltdatenTable.getItems()) {
+						pflanzenmittelData.add(new XYChart.Data<>(umweldatum.getIndex(), umweldatum.getThree()));
+					}
+					break;
+				default:
+					throw new IllegalStateException("Unexpected value: " + t1.getNr());
+			}
+			valueColumn.setCellValueFactory(new PropertyValueFactory<>(property));
+			umweltdatenTable.refresh();
+			valueChart.getData().addAll(pflanzenmittelSeries);
+		});
+	}
 
-    @FXML
-    public void populateDefaultData(ActionEvent actionEvent) {
-        try {
-            String sqlFile = IOUtils.toString(getClass().getResource("db/Blumenthal.sql"));
-            Statement fileStatements = DBController.getConnection().createStatement();
-            fileStatements.executeUpdate(sqlFile);
-        } catch (IOException | SQLException e) {
-            e.printStackTrace();
-        }
-    }
+	@FXML
+	public void connectDatabase(ActionEvent actionEvent) {
+		try {
+			dbController.initDBConnection();
+		} catch (RuntimeException e) {
+			System.out.println("Couldn't connect");
+		}
+	}
 
-    @FXML
-    private void close(ActionEvent actionEvent) {
-        stage.close();
-    }
+	@FXML
+	public void populateDefaultData(ActionEvent actionEvent) {
+		try {
+			String sqlFile = IOUtils.toString(getClass().getResource("db/Blumenthal.sql"));
+			Statement fileStatements = DBController.getConnection().createStatement();
+			fileStatements.executeUpdate(sqlFile);
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
-    @FXML
-    public void readData(ActionEvent actionEvent) {
-        try {
-            if (!pflanzenmittelBox.getItems().isEmpty())
-                pflanzenmittelBox.getItems().clear();
-            pflanzenmittelBox.getItems().addAll(DBController.getInstance().getPflanzenmittel());
-            if (!umweltdatenTable.getItems().isEmpty())
-                umweltdatenTable.getItems().clear();
-            umweltdatenTable.getItems().addAll(DBController.getInstance().getUmweldaten());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+	@FXML
+	private void close(ActionEvent actionEvent) {
+		stage.close();
+	}
 
-    @FXML
-    public void chooseDatabase(ActionEvent actionEvent) {
-        FileChooser chooser = new FileChooser();
-        chooser.setInitialDirectory(dbController.getDbPath().getParentFile());
-        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SQLITE Database", "*.sqlite", "*.db", "*.db3", "*.sqlite"));
-        File dbFile = chooser.showOpenDialog(stage);
+	@FXML
+	public void readData(ActionEvent actionEvent) {
+		try {
+			if (!pflanzenmittelBox.getItems().isEmpty())
+				pflanzenmittelBox.getItems().clear();
+			pflanzenmittelBox.getItems().addAll(DBController.getInstance().getPflanzenmittel());
+			if (!umweltdatenTable.getItems().isEmpty())
+				umweltdatenTable.getItems().clear();
+			umweltdatenTable.getItems().addAll(DBController.getInstance().getUmweldaten());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
-        if (dbFile != null) {
-            dbController.setDbPath(dbFile);
-        }
-    }
+	@FXML
+	public void chooseDatabase(ActionEvent actionEvent) {
+		FileChooser chooser = new FileChooser();
+		chooser.setInitialDirectory(dbController.getDbPath().getParentFile());
+		chooser.getExtensionFilters().add(sqliteExtensionFilter);
+		File dbFile = chooser.showOpenDialog(stage);
+
+		if (dbFile != null) {
+			dbController.setDbPath(dbFile);
+		}
+	}
+
+	@FXML
+	public void createDatabase(ActionEvent actionEvent) {
+		FileChooser chooser = new FileChooser();
+		chooser.setInitialDirectory(dbController.getDbPath().getParentFile());
+		chooser.getExtensionFilters().add(sqliteExtensionFilter);
+		File dbFile = chooser.showSaveDialog(stage);
+
+		if (dbFile != null) {
+			dbController.setDbPath(dbFile);
+			dbController.initDBConnection();
+		}
+	}
 }

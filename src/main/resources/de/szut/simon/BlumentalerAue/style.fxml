@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.*?>
@@ -12,11 +11,15 @@
       fx:controller="de.szut.simon.BlumentalerAue.GuiController">
     <MenuBar>
         <Menu mnemonicParsing="false" text="Datei">
-            <MenuItem mnemonicParsing="false" onAction="#chooseDatabase" text="Datenbank auswählen"/>
             <MenuItem mnemonicParsing="false" onAction="#close" text="Beenden"/>
         </Menu>
+        <Menu mnemonicParsing="false" text="Datenbank">
+            <MenuItem mnemonicParsing="false" onAction="#createDatabase" text="Datenbank erstellen"/>
+            <MenuItem mnemonicParsing="false" onAction="#chooseDatabase" text="Datenbank auswählen"/>
+            <MenuItem mnemonicParsing="false" onAction="#connectDatabase" text="Datenbank verbinden"/>
+            <MenuItem mnemonicParsing="false" onAction="#populateDefaultData" text="Standard Werte hinzufügen"/>
+        </Menu>
         <Menu mnemonicParsing="false" text="Hilfe">
-            <MenuItem onAction="#populateDefaultData" text="Standard Werte hinzufügen"/>
             <MenuItem mnemonicParsing="false" text="Über"/>
         </Menu>
     </MenuBar>
