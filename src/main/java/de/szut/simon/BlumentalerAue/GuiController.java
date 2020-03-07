@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -78,7 +79,11 @@ public class GuiController {
 		try {
 			dbController.initDBConnection();
 		} catch (RuntimeException e) {
-			System.out.println("Couldn't connect");
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setHeaderText("Verbindung zur Datenbank nicht möglich.");
+			alert.setContentText(String.format("%s%s%s\n\n\n%s", "Eine Verbindung zur Datenbank \"",
+				dbController.getDbPath().getAbsolutePath(), "\" konnte nicht aufgebaut werden.", e.toString()));
+			alert.show();
 		}
 	}
 
@@ -108,7 +113,11 @@ public class GuiController {
 				umweltdatenTable.getItems().clear();
 			umweltdatenTable.getItems().addAll(DBController.getInstance().getUmweldaten());
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setHeaderText("DAtenbank nicht lesbar");
+			alert.setContentText(String.format("%s\n\n\n%s",
+				"Die Daten konnten nicht aus der Datenbank gelesen werden.", e.toString()));
+			alert.show();
 		}
 	}
 

@@ -148,7 +148,12 @@ class DBController {
 		ResultSet pflanzenResult = pflanzenQuery.executeQuery("SELECT * FROM pflanzenmittel");
 
 		while (pflanzenResult.next()) {
-			pflanzenmittel.add(new Pflanzenmittel(pflanzenResult.getString("Nr"), pflanzenResult.getString("Mittel")));
+			pflanzenmittel.add(
+				new Pflanzenmittel(
+					pflanzenResult.getString("Nr"),
+					pflanzenResult.getString("Mittel")
+				)
+			);
 		}
 
 		pflanzenResult.close();
@@ -167,7 +172,14 @@ class DBController {
 		ResultSet umweltdatenResult = umweltdatenQuery.executeQuery("SELECT * FROM umweltdaten");
 
 		while (umweltdatenResult.next()) {
-			umweltdaten.add(new Umweldatum(umweltdatenResult.getLong("index"), umweltdatenResult.getDouble("1"), umweltdatenResult.getDouble("2"), umweltdatenResult.getDouble("3")));
+			umweltdaten.add(
+				new Umweldatum(
+					umweltdatenResult.getLong("index"),
+					umweltdatenResult.getDouble("1"),
+					umweltdatenResult.getDouble("2"),
+					umweltdatenResult.getDouble("3")
+				)
+			);
 		}
 
 		umweltdatenResult.close();
