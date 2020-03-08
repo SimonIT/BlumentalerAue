@@ -1,7 +1,7 @@
 package de.szut.simon.BlumentalerAue;
 
-import de.szut.simon.BlumentalerAue.data.Pflanzenmittel;
-import de.szut.simon.BlumentalerAue.data.Umweldatum;
+import de.szut.simon.BlumentalerAue.data.PlantProtectant;
+import de.szut.simon.BlumentalerAue.data.EnvironmentRecord;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,10 +39,6 @@ class DBController {
 		DBController dbc = DBController.getInstance();
 		dbc.initDBConnection();
 		dbc.handleDB();
-	}
-
-	public static Connection getConnection() {
-		return connection;
 	}
 
 	@NotNull
@@ -88,52 +84,52 @@ class DBController {
 	}
 
 	@NotNull
-	public List<Pflanzenmittel> getPflanzenmittel() throws SQLException {
-		List<Pflanzenmittel> pflanzenmittel = new ArrayList<>();
+	public List<PlantProtectant> getPlantProtectants() throws SQLException {
+		List<PlantProtectant> plantProtectants = new ArrayList<>();
 
 		if (connection == null)
-			return pflanzenmittel;
+			return plantProtectants;
 
-		Statement pflanzenQuery = connection.createStatement();
-		ResultSet pflanzenResult = pflanzenQuery.executeQuery("SELECT * FROM pflanzenmittel");
+		Statement protectantsQuery = connection.createStatement();
+		ResultSet protectantsResult = protectantsQuery.executeQuery("SELECT * FROM pflanzenmittel");
 
-		while (pflanzenResult.next()) {
-			pflanzenmittel.add(
-				new Pflanzenmittel(
-					pflanzenResult.getString("Nr"),
-					pflanzenResult.getString("Mittel")
+		while (protectantsResult.next()) {
+			plantProtectants.add(
+				new PlantProtectant(
+					protectantsResult.getString("Nr"),
+					protectantsResult.getString("Mittel")
 				)
 			);
 		}
 
-		pflanzenResult.close();
+		protectantsResult.close();
 
-		return pflanzenmittel;
+		return plantProtectants;
 	}
 
 	@NotNull
-	public List<Umweldatum> getUmweldaten() throws SQLException {
-		List<Umweldatum> umweltdaten = new ArrayList<>();
+	public List<EnvironmentRecord> getEnvironmentRecords() throws SQLException {
+		List<EnvironmentRecord> environmentRecords = new ArrayList<>();
 
 		if (connection == null)
-			return umweltdaten;
+			return environmentRecords;
 
-		Statement umweltdatenQuery = connection.createStatement();
-		ResultSet umweltdatenResult = umweltdatenQuery.executeQuery("SELECT * FROM umweltdaten");
+		Statement environmentRecordsQuery = connection.createStatement();
+		ResultSet environmentRecordsResult = environmentRecordsQuery.executeQuery("SELECT * FROM umweltdaten");
 
-		while (umweltdatenResult.next()) {
-			umweltdaten.add(
-				new Umweldatum(
-					umweltdatenResult.getLong("index"),
-					umweltdatenResult.getDouble("1"),
-					umweltdatenResult.getDouble("2"),
-					umweltdatenResult.getDouble("3")
+		while (environmentRecordsResult.next()) {
+			environmentRecords.add(
+				new EnvironmentRecord(
+					environmentRecordsResult.getLong("index"),
+					environmentRecordsResult.getDouble("1"),
+					environmentRecordsResult.getDouble("2"),
+					environmentRecordsResult.getDouble("3")
 				)
 			);
 		}
 
-		umweltdatenResult.close();
+		environmentRecordsResult.close();
 
-		return umweltdaten;
+		return environmentRecords;
 	}
 }

@@ -5,13 +5,13 @@ import javafx.beans.property.SimpleLongProperty;
 
 import java.util.Objects;
 
-public class Umweldatum {
+public class EnvironmentRecord {
 	private SimpleLongProperty index;
 	private SimpleDoubleProperty one;
 	private SimpleDoubleProperty two;
 	private SimpleDoubleProperty three;
 
-	public Umweldatum(long index, double one, double two, double drei) {
+	public EnvironmentRecord(long index, double one, double two, double drei) {
 		this.index = new SimpleLongProperty(index);
 		this.one = new SimpleDoubleProperty(one);
 		this.two = new SimpleDoubleProperty(two);
@@ -70,7 +70,7 @@ public class Umweldatum {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		Umweldatum that = (Umweldatum) o;
+		EnvironmentRecord that = (EnvironmentRecord) o;
 		return index.equals(that.index) &&
 			one.equals(that.one) &&
 			two.equals(that.two) &&
@@ -84,7 +84,7 @@ public class Umweldatum {
 
 	@Override
 	public String toString() {
-		return "Umweldatum{" +
+		return "EnvironmentRecord{" +
 			"index=" + index +
 			", one=" + one +
 			", two=" + two +

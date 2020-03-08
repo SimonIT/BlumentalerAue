@@ -23,3 +23,7 @@ des Pflanzenschutzmittels (Messwert). (25 Punkte)
 f) Die Applikation enthält die Möglichkeit den Pfad zu Datenbank auszuwählen. (5 Punkte)
 
 g) Beim Beenden der Applikation  werden einige Einstellungen in einer Datei gespeichert (ini, Property, json ...). Sollte es diese Datei nicht geben so startet ihr Programm mit Standarwerten. Beim Beendigen des Programms wird die Einstellungsdatei erstellt.Diese Einstellungen werden beim nächsten Start berücksichtigt.(Pfad zur DB, Fenstergröße und Position) (10 Punkte)
+
+## Anleitung
+
+Zum Starten einfach eine der beiden Run Configurations in IntelliJ starten oder `.\gradlew.bat run` bzw `./gradlew run` ausführen.

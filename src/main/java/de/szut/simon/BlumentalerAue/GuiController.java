@@ -1,7 +1,7 @@
 package de.szut.simon.BlumentalerAue;
 
-import de.szut.simon.BlumentalerAue.data.Pflanzenmittel;
-import de.szut.simon.BlumentalerAue.data.Umweldatum;
+import de.szut.simon.BlumentalerAue.data.PlantProtectant;
+import de.szut.simon.BlumentalerAue.data.EnvironmentRecord;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,11 +24,11 @@ import java.sql.SQLException;
 public class GuiController {
 
 	@FXML
-	public TableColumn<Umweldatum, Double> valueColumn;
+	public TableColumn<EnvironmentRecord, Double> valueColumn;
 	@FXML
-	public TableView<Umweldatum> umweltdatenTable;
+	public TableView<EnvironmentRecord> umweltdatenTable;
 	@FXML
-	public ComboBox<Pflanzenmittel> pflanzenmittelBox;
+	public ComboBox<PlantProtectant> pflanzenmittelBox;
 	@FXML
 	public LineChart<Long, Double> valueChart;
 	@FXML
@@ -44,31 +44,31 @@ public class GuiController {
 		pflanzenmittelBox.getSelectionModel().selectedItemProperty().addListener((observableValue, o, t1) -> {
 			valueChart.getData().clear();
 			XYChart.Series<Long, Double> pflanzenmittelSeries = new XYChart.Series<>();
-			pflanzenmittelSeries.setName(t1.getMittel());
+			pflanzenmittelSeries.setName(t1.getName());
 
 			ObservableList<XYChart.Data<Long, Double>> pflanzenmittelData = pflanzenmittelSeries.getData();
 			String property;
-			switch (t1.getNr()) {
+			switch (t1.getNo()) {
 				case "1":
 					property = "one";
-					for (Umweldatum umweldatum : umweltdatenTable.getItems()) {
-						pflanzenmittelData.add(new XYChart.Data<>(umweldatum.getIndex(), umweldatum.getOne()));
+					for (EnvironmentRecord environmentRecord : umweltdatenTable.getItems()) {
+						pflanzenmittelData.add(new XYChart.Data<>(environmentRecord.getIndex(), environmentRecord.getOne()));
 					}
 					break;
 				case "2":
 					property = "two";
-					for (Umweldatum umweldatum : umweltdatenTable.getItems()) {
-						pflanzenmittelData.add(new XYChart.Data<>(umweldatum.getIndex(), umweldatum.getTwo()));
+					for (EnvironmentRecord environmentRecord : umweltdatenTable.getItems()) {
+						pflanzenmittelData.add(new XYChart.Data<>(environmentRecord.getIndex(), environmentRecord.getTwo()));
 					}
 					break;
 				case "3":
 					property = "three";
-					for (Umweldatum umweldatum : umweltdatenTable.getItems()) {
-						pflanzenmittelData.add(new XYChart.Data<>(umweldatum.getIndex(), umweldatum.getThree()));
+					for (EnvironmentRecord environmentRecord : umweltdatenTable.getItems()) {
+						pflanzenmittelData.add(new XYChart.Data<>(environmentRecord.getIndex(), environmentRecord.getThree()));
 					}
 					break;
 				default:
-					throw new IllegalStateException("Unexpected value: " + t1.getNr());
+					throw new IllegalStateException("Unexpected value: " + t1.getNo());
 			}
 			valueColumn.setCellValueFactory(new PropertyValueFactory<>(property));
 			umweltdatenTable.refresh();
@@ -126,10 +126,10 @@ public class GuiController {
 			statusLabel.setText("Lese Daten ein...");
 			if (!pflanzenmittelBox.getItems().isEmpty())
 				pflanzenmittelBox.getItems().clear();
-			pflanzenmittelBox.getItems().addAll(DBController.getInstance().getPflanzenmittel());
+			pflanzenmittelBox.getItems().addAll(DBController.getInstance().getPlantProtectants());
 			if (!umweltdatenTable.getItems().isEmpty())
 				umweltdatenTable.getItems().clear();
-			umweltdatenTable.getItems().addAll(DBController.getInstance().getUmweldaten());
+			umweltdatenTable.getItems().addAll(DBController.getInstance().getEnvironmentRecords());
 			statusLabel.setText("Daten erfolgreich eingelesen!");
 		} catch (SQLException e) {
 			Alert alert = new Alert(Alert.AlertType.ERROR);
