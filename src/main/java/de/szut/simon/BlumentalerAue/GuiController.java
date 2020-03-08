@@ -14,14 +14,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.apache.commons.io.IOUtils;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class GuiController {
 
@@ -33,6 +31,8 @@ public class GuiController {
 	public ComboBox<Pflanzenmittel> pflanzenmittelBox;
 	@FXML
 	public LineChart<Long, Double> valueChart;
+	@FXML
+	public Label statusLabel;
 
 	Stage stage;
 
@@ -79,24 +79,39 @@ public class GuiController {
 	@FXML
 	public void connectDatabase(ActionEvent actionEvent) {
 		try {
+			statusLabel.setText("Verbindung zur Datenbank wird hergestellt...");
 			dbController.initDBConnection();
+			statusLabel.setText("Verbindung zur Datenbank erfolgreich hergestellt!");
 		} catch (RuntimeException e) {
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setHeaderText("Verbindung zur Datenbank nicht möglich.");
-			alert.setContentText(String.format("%s%s%s\n\n\n%s", "Eine Verbindung zur Datenbank \"",
-				dbController.getDbPath().getAbsolutePath(), "\" konnte nicht aufgebaut werden.", e.toString()));
+			alert.setContentText(
+				String.format("Eine Verbindung zur Datenbank \"%s\" konnte nicht aufgebaut werden.\n\n\n%s",
+					dbController.getDbPath().getAbsolutePath(), e.toString()));
 			alert.show();
 		}
 	}
 
 	@FXML
+	public void disconnectDatabase(ActionEvent actionEvent) {
+		statusLabel.setText("Schließe Verbindung zur Datenbank...");
+		dbController.closeDB();
+		statusLabel.setText("Verbindung zur Datenbank erfolgreich geschlossen!");
+	}
+
+	@FXML
 	public void populateDefaultData(ActionEvent actionEvent) {
 		try {
-			String sqlFile = IOUtils.toString(getClass().getResource("db/Blumenthal.sql"));
-			Statement fileStatements = DBController.getConnection().createStatement();
-			fileStatements.executeUpdate(sqlFile);
+			statusLabel.setText("Füge Daten zur Datenbank hinzu...");
+			dbController.handleDB();
+			statusLabel.setText("Daten erfolgreich zur Datenbank hinzugefügt!");
 		} catch (IOException | SQLException e) {
-			e.printStackTrace();
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setHeaderText("Verbindung zur Datenbank nicht möglich.");
+			alert.setContentText(
+				String.format("Eine Verbindung zur Datenbank \"%s\" konnte nicht aufgebaut werden.\n\n\n%s",
+					dbController.getDbPath().getAbsolutePath(), e.toString()));
+			alert.show();
 		}
 	}
 
@@ -108,17 +123,19 @@ public class GuiController {
 	@FXML
 	public void readData(ActionEvent actionEvent) {
 		try {
+			statusLabel.setText("Lese Daten ein...");
 			if (!pflanzenmittelBox.getItems().isEmpty())
 				pflanzenmittelBox.getItems().clear();
 			pflanzenmittelBox.getItems().addAll(DBController.getInstance().getPflanzenmittel());
 			if (!umweltdatenTable.getItems().isEmpty())
 				umweltdatenTable.getItems().clear();
 			umweltdatenTable.getItems().addAll(DBController.getInstance().getUmweldaten());
+			statusLabel.setText("Daten erfolgreich eingelesen!");
 		} catch (SQLException e) {
 			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setHeaderText("DAtenbank nicht lesbar");
-			alert.setContentText(String.format("%s\n\n\n%s",
-				"Die Daten konnten nicht aus der Datenbank gelesen werden.", e.toString()));
+			alert.setHeaderText("Datenbank nicht lesbar");
+			alert.setContentText(
+				String.format("Die Daten konnten nicht aus der Datenbank gelesen werden.\n\n\n%s", e.toString()));
 			alert.show();
 		}
 	}
@@ -132,6 +149,7 @@ public class GuiController {
 
 		if (dbFile != null) {
 			dbController.setDbPath(dbFile);
+			statusLabel.setText(String.format("Die Datenbank %s wurde erfolgreich ausgewählt!", dbFile.getAbsolutePath()));
 		}
 	}
 
@@ -145,6 +163,7 @@ public class GuiController {
 		if (dbFile != null) {
 			dbController.setDbPath(dbFile);
 			dbController.initDBConnection();
+			statusLabel.setText(String.format("Die Datenbank %s wurde erfolgreich erstellt!", dbFile.getAbsolutePath()));
 		}
 	}
 

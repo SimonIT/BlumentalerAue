@@ -32,7 +32,7 @@ public class Main extends Application {
 			windowProperties.load(new FileReader(windowSettingsFile));
 			if (Boolean.parseBoolean(windowProperties.getProperty("isFullScreen", "false"))) {
 				stage.setFullScreen(true);
-			} else if (Boolean.parseBoolean(windowProperties.getProperty("isMaximized", "false"))) {
+			} else if (Boolean.parseBoolean(windowProperties.getProperty("isMaximized", "true"))) {
 				stage.setMaximized(true);
 			} else {
 				stage.setX(Double.parseDouble(windowProperties.getProperty("X")));
