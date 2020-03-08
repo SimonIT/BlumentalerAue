@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>de.szut.simon.BlumentalerAue</OriginalElement>
+  <nodes>
+    <node x="0.0" y="0.0">de.szut.simon.BlumentalerAue.data.PlantProtectant</node>
+    <node x="123.75" y="240.0">de.szut.simon.BlumentalerAue.Main</node>
+    <node x="173.0" y="0.0">de.szut.simon.BlumentalerAue.data.EnvironmentRecord</node>
+    <node x="85.92777777777779" y="80.0">de.szut.simon.BlumentalerAue.DBController</node>
+    <node x="131.25" y="160.0">de.szut.simon.BlumentalerAue.GuiController</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="de.szut.simon.BlumentalerAue.DBController" target="de.szut.simon.BlumentalerAue.data.EnvironmentRecord">
+      <point x="16.5" y="-15.0" />
+      <point x="168.4277777777778" y="55.0" />
+      <point x="194.0" y="55.0" />
+      <point x="-63.0" y="15.0" />
+    </edge>
+    <edge source="de.szut.simon.BlumentalerAue.GuiController" target="de.szut.simon.BlumentalerAue.DBController">
+      <point x="0.0" y="-15.0" />
+      <point x="200.75" y="140.0" />
+      <point x="195.9277777777778" y="140.0" />
+      <point x="44.0" y="15.0" />
+    </edge>
+    <edge source="de.szut.simon.BlumentalerAue.GuiController" target="de.szut.simon.BlumentalerAue.data.PlantProtectant">
+      <point x="-55.599999999999994" y="-15.0" />
+      <point x="145.15" y="130.0" />
+      <point x="51.655555555555566" y="130.0" />
+      <point x="51.655555555555566" y="55.0" />
+      <point x="25.5" y="55.0" />
+      <point x="-51.0" y="15.0" />
+    </edge>
+    <edge source="de.szut.simon.BlumentalerAue.DBController" target="de.szut.simon.BlumentalerAue.data.PlantProtectant">
+      <point x="-49.5" y="-15.0" />
+      <point x="102.42777777777779" y="55.0" />
+      <point x="76.5" y="55.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="de.szut.simon.BlumentalerAue.Main" target="de.szut.simon.BlumentalerAue.DBController">
+      <point x="-18.5" y="-15.0" />
+      <point x="142.25" y="215.0" />
+      <point x="120.75" y="215.0" />
+      <point x="120.75" y="140.0" />
+      <point x="107.92777777777779" y="140.0" />
+      <point x="-44.0" y="15.0" />
+    </edge>
+    <edge source="de.szut.simon.BlumentalerAue.GuiController" target="de.szut.simon.BlumentalerAue.data.EnvironmentRecord">
+      <point x="27.80000000000001" y="-15.0" />
+      <point x="228.55" y="130.0" />
+      <point x="286.65555555555557" y="130.0" />
+      <point x="286.65555555555557" y="55.0" />
+      <point x="278.0" y="55.0" />
+      <point x="21.0" y="15.0" />
+    </edge>
+    <edge source="de.szut.simon.BlumentalerAue.Main" target="de.szut.simon.BlumentalerAue.GuiController">
+      <point x="18.5" y="-15.0" />
+      <point x="179.25" y="215.0" />
+      <point x="200.75" y="215.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="170.5" y="135.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
