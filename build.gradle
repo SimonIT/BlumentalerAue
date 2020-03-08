@@ -8,6 +8,7 @@ group 'de.szut.simon'
 version '0.1'
 
 sourceCompatibility = 11
+compileJava.options.encoding = "UTF-8"
 
 repositories {
     mavenLocal()
@@ -26,6 +27,6 @@ application {
 }
 
 javafx {
-    sdk = 'R:\\Programmierung\\Java_lib\\javafx-sdk-12.0.1'
+    sdk = 'R:\\Programmierung\\Java_lib\\javafx-sdk-12.0.1' // Comment this line to use maven sdk
     modules = ['javafx.controls', 'javafx.fxml']
 }
