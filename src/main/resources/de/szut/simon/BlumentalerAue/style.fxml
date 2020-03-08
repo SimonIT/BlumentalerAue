@@ -20,7 +20,7 @@
             <MenuItem mnemonicParsing="false" onAction="#populateDefaultData" text="Standard Werte hinzufügen"/>
         </Menu>
         <Menu mnemonicParsing="false" text="Hilfe">
-            <MenuItem mnemonicParsing="false" text="Über"/>
+            <MenuItem mnemonicParsing="false" onAction="#showAboutDialog" text="Über"/>
         </Menu>
     </MenuBar>
     <GridPane hgap="14.0" vgap="22.0" VBox.vgrow="ALWAYS">

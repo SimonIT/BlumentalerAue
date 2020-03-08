@@ -7,17 +7,19 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.commons.io.IOUtils;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -144,5 +146,28 @@ public class GuiController {
 			dbController.setDbPath(dbFile);
 			dbController.initDBConnection();
 		}
+	}
+
+	@FXML
+	public void showAboutDialog(ActionEvent actionEvent) {
+		Dialog<Void> aboutDialog = new Dialog<>();
+		aboutDialog.setTitle("Über BlumentalerAue");
+		aboutDialog.setHeaderText("Über BlumentalerAue");
+
+		DialogPane pane = aboutDialog.getDialogPane();
+		Hyperlink gitHubLink = new Hyperlink("SourceCode auf GitHub");
+		gitHubLink.setOnAction(dialogActionEvent -> {
+			Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+			if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+				try {
+					desktop.browse(new URI("https://github.com/SimonIT/BlumentalerAue"));
+				} catch (Exception ignored) {
+				}
+			}
+		});
+		pane.setContent(new VBox(new Label("BlumentalerAue ist ein Programm von Simon Bullik."), gitHubLink));
+		pane.getButtonTypes().addAll(new ButtonType("Okay!", ButtonBar.ButtonData.CANCEL_CLOSE));
+
+		aboutDialog.show();
 	}
 }
