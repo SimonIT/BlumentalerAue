@@ -25,7 +25,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(@NotNull Stage stage) throws Exception {
-		stage.setTitle("Prüfungsvorbereitung");
+		stage.setTitle("Blumentaler Aue");
 
 		if (windowSettingsFile.exists() && windowSettingsFile.canRead()) {
 			Properties windowProperties = new Properties();
