@@ -42,7 +42,7 @@ public class Main extends Application {
 			}
 			String dbPath = windowProperties.getProperty("databasePath", null);
 			if (dbPath != null)
-				DBController.getInstance().setDbPath(new File(dbPath));
+				DBController.getInstance().setDbFile(new File(dbPath));
 		}
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("style.fxml"));
@@ -71,7 +71,7 @@ public class Main extends Application {
 			windowProperties.setProperty("Y", String.valueOf(s.getY()));
 			windowProperties.setProperty("Height", String.valueOf(s.getHeight()));
 			windowProperties.setProperty("Width", String.valueOf(s.getWidth()));
-			windowProperties.setProperty("databasePath", DBController.getInstance().getDbPath().getAbsolutePath());
+			windowProperties.setProperty("databasePath", DBController.getInstance().getDbFile().getAbsolutePath());
 
 			try {
 				if (windowSettingsDir.canWrite()) {

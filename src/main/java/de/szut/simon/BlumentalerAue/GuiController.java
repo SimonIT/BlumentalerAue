@@ -1,9 +1,8 @@
 package de.szut.simon.BlumentalerAue;
 
-import de.szut.simon.BlumentalerAue.data.PlantProtectant;
 import de.szut.simon.BlumentalerAue.data.EnvironmentRecord;
+import de.szut.simon.BlumentalerAue.data.PlantProtectant;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
@@ -21,6 +20,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.sql.SQLException;
 
+/**
+ * Controller of the gui
+ */
 public class GuiController {
 
 	@FXML
@@ -34,9 +36,18 @@ public class GuiController {
 	@FXML
 	public Label statusLabel;
 
+	/**
+	 * Stage of the window
+	 */
 	Stage stage;
 
+	/**
+	 * Database controller instance
+	 */
 	private DBController dbController = DBController.getInstance();
+	/**
+	 * Extension filter for sqlite databases
+	 */
 	private FileChooser.ExtensionFilter sqliteExtensionFilter = new FileChooser.ExtensionFilter("SQLITE Database", "*.sqlite", "*.db", "*.db3", "*.sqlite3");
 
 	@FXML
@@ -76,8 +87,11 @@ public class GuiController {
 		});
 	}
 
+	/**
+	 * Connects to the database
+	 */
 	@FXML
-	public void connectDatabase(ActionEvent actionEvent) {
+	public void connectDatabase() {
 		try {
 			statusLabel.setText("Verbindung zur Datenbank wird hergestellt...");
 			dbController.initDBConnection();
@@ -87,20 +101,26 @@ public class GuiController {
 			alert.setHeaderText("Verbindung zur Datenbank nicht möglich.");
 			alert.setContentText(
 				String.format("Eine Verbindung zur Datenbank \"%s\" konnte nicht aufgebaut werden.\n\n\n%s",
-					dbController.getDbPath().getAbsolutePath(), e.toString()));
+					dbController.getDbFile().getAbsolutePath(), e.toString()));
 			alert.show();
 		}
 	}
 
+	/**
+	 * DIsconnects from the database
+	 */
 	@FXML
-	public void disconnectDatabase(ActionEvent actionEvent) {
+	public void disconnectDatabase() {
 		statusLabel.setText("Schließe Verbindung zur Datenbank...");
 		dbController.closeDB();
 		statusLabel.setText("Verbindung zur Datenbank erfolgreich geschlossen!");
 	}
 
+	/**
+	 * Adds the default data to the database
+	 */
 	@FXML
-	public void populateDefaultData(ActionEvent actionEvent) {
+	public void populateDefaultData() {
 		try {
 			statusLabel.setText("Füge Daten zur Datenbank hinzu...");
 			dbController.handleDB();
@@ -110,18 +130,24 @@ public class GuiController {
 			alert.setHeaderText("Verbindung zur Datenbank nicht möglich.");
 			alert.setContentText(
 				String.format("Eine Verbindung zur Datenbank \"%s\" konnte nicht aufgebaut werden.\n\n\n%s",
-					dbController.getDbPath().getAbsolutePath(), e.toString()));
+					dbController.getDbFile().getAbsolutePath(), e.toString()));
 			alert.show();
 		}
 	}
 
+	/**
+	 * Closes the window
+	 */
 	@FXML
-	private void close(ActionEvent actionEvent) {
+	private void close() {
 		stage.close();
 	}
 
+	/**
+	 * Reads the data from the database
+	 */
 	@FXML
-	public void readData(ActionEvent actionEvent) {
+	public void readData() {
 		try {
 			statusLabel.setText("Lese Daten ein...");
 			if (!pflanzenmittelBox.getItems().isEmpty())
@@ -140,35 +166,44 @@ public class GuiController {
 		}
 	}
 
+	/**
+	 * Sets the database to the user chosen one
+	 */
 	@FXML
-	public void chooseDatabase(ActionEvent actionEvent) {
+	public void chooseDatabase() {
 		FileChooser chooser = new FileChooser();
-		chooser.setInitialDirectory(dbController.getDbPath().getParentFile());
+		chooser.setInitialDirectory(dbController.getDbFile().getParentFile());
 		chooser.getExtensionFilters().add(sqliteExtensionFilter);
 		File dbFile = chooser.showOpenDialog(stage);
 
 		if (dbFile != null) {
-			dbController.setDbPath(dbFile);
+			dbController.setDbFile(dbFile);
 			statusLabel.setText(String.format("Die Datenbank %s wurde erfolgreich ausgewählt!", dbFile.getAbsolutePath()));
 		}
 	}
 
+	/**
+	 * Creates a new database from the file
+	 */
 	@FXML
-	public void createDatabase(ActionEvent actionEvent) {
+	public void createDatabase() {
 		FileChooser chooser = new FileChooser();
-		chooser.setInitialDirectory(dbController.getDbPath().getParentFile());
+		chooser.setInitialDirectory(dbController.getDbFile().getParentFile());
 		chooser.getExtensionFilters().add(sqliteExtensionFilter);
 		File dbFile = chooser.showSaveDialog(stage);
 
 		if (dbFile != null) {
-			dbController.setDbPath(dbFile);
+			dbController.setDbFile(dbFile);
 			dbController.initDBConnection();
 			statusLabel.setText(String.format("Die Datenbank %s wurde erfolgreich erstellt!", dbFile.getAbsolutePath()));
 		}
 	}
 
+	/**
+	 * Opens a dialog with information about the author
+	 */
 	@FXML
-	public void showAboutDialog(ActionEvent actionEvent) {
+	public void showAboutDialog() {
 		Dialog<Void> aboutDialog = new Dialog<>();
 		aboutDialog.setTitle("Über BlumentalerAue");
 		aboutDialog.setHeaderText("Über BlumentalerAue");

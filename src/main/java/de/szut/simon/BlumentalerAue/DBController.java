@@ -1,17 +1,21 @@
 package de.szut.simon.BlumentalerAue;
 
-import de.szut.simon.BlumentalerAue.data.PlantProtectant;
 import de.szut.simon.BlumentalerAue.data.EnvironmentRecord;
+import de.szut.simon.BlumentalerAue.data.PlantProtectant;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * For encapsulated access to the database
+ */
 class DBController {
 	private static final DBController dbcontroller = new DBController();
 	private static Connection connection;
@@ -25,11 +29,20 @@ class DBController {
 		}
 	}
 
-	private File DB_PATH = Paths.get("db", "aue.db").toFile();
+	/**
+	 * Database file, default inside the project
+	 */
+	private File dbFile = Paths.get("db", "aue.db").toFile();
 
+	/**
+	 * Private constructor for singleton
+	 */
 	private DBController() {
 	}
 
+	/**
+	 * @return the one and only controller
+	 */
 	@NotNull
 	public static DBController getInstance() {
 		return dbcontroller;
@@ -39,24 +52,39 @@ class DBController {
 		DBController dbc = DBController.getInstance();
 		dbc.initDBConnection();
 		dbc.handleDB();
+		dbc.closeDB();
 	}
 
+	/**
+	 * @return db file
+	 */
 	@NotNull
-	public File getDbPath() {
-		return DB_PATH;
+	public File getDbFile() {
+		return dbFile;
 	}
 
-	public void setDbPath(@NotNull File dbPath) {
+	/**
+	 * Sets the database file
+	 * If the file does not exist, it will be created
+	 *
+	 * @param dbFile the db file
+	 */
+	public void setDbFile(@NotNull File dbFile) {
 		closeDB();
-		this.DB_PATH = dbPath;
+		this.dbFile = dbFile;
 	}
 
+	/**
+	 * Connects to the database
+	 */
 	void initDBConnection() {
 		try {
 			if (connection != null) // Don't check if the database exists to create a new oe if none exists
 				return;
+			if (!dbFile.getParentFile().exists())
+				dbFile.getParentFile().mkdirs();
 			System.out.println("Creating Connection to Database...");
-			connection = DriverManager.getConnection("jdbc:sqlite:" + DB_PATH);
+			connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
 			if (!connection.isClosed())
 				System.out.println("...Connection established");
 		} catch (SQLException e) {
@@ -66,6 +94,9 @@ class DBController {
 		Runtime.getRuntime().addShutdownHook(new Thread(this::closeDB));
 	}
 
+	/**
+	 * Closes the connection to the database
+	 */
 	void closeDB() {
 		try {
 			if (connection != null && !connection.isClosed()) {
@@ -79,10 +110,23 @@ class DBController {
 		}
 	}
 
+	/**
+	 * Add default values to the database
+	 *
+	 * @throws IOException  If the sql file is not present
+	 * @throws SQLException If the sql can't get executed
+	 */
 	void handleDB() throws IOException, SQLException {
-		connection.createStatement().executeUpdate(IOUtils.toString(getClass().getResource("db/Blumenthal.sql")));
+		connection.createStatement().executeUpdate(
+			IOUtils.toString(getClass().getResource("db/Blumenthal.sql"), StandardCharsets.UTF_8));
 	}
 
+	/**
+	 * Get all plant protectants
+	 *
+	 * @return a list with all plant protectants
+	 * @throws SQLException if the protectants can't get read
+	 */
 	@NotNull
 	public List<PlantProtectant> getPlantProtectants() throws SQLException {
 		List<PlantProtectant> plantProtectants = new ArrayList<>();
@@ -107,6 +151,12 @@ class DBController {
 		return plantProtectants;
 	}
 
+	/**
+	 * Get all environment records
+	 *
+	 * @return a list with all environment records
+	 * @throws SQLException if the environment can't get read
+	 */
 	@NotNull
 	public List<EnvironmentRecord> getEnvironmentRecords() throws SQLException {
 		List<EnvironmentRecord> environmentRecords = new ArrayList<>();
