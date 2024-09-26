@@ -19,7 +19,7 @@ dependencies {
     compile files("R:\\Programmierung\\Java_lib\\JDBC\\sqlite-jdbc-3.27.2.1.jar")
     // compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.30.1'
     compile group: 'commons-io', name: 'commons-io', version: '2.17.0'
-    compileOnly group: 'org.jetbrains', name: 'annotations', version: '24.1.0'
+    compileOnly group: 'org.jetbrains', name: 'annotations', version: '25.0.0'
 }
 
 application {
